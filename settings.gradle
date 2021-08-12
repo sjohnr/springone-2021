@@ -1,0 +1,6 @@
+rootProject.name = 'springone-2021'
+
+include ":flights-api"
+include ":sso"
+include ":flights-web"
+include ":spa"
