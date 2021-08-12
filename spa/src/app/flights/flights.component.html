@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="pb-2 mt-4 mb-2 border-bottom">
+    <h1>Flights</h1>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Pilot</th>
+        <th>Flight Number</th>
+        <th>Status</th>
+        <th>Next Step</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let flight of flights$ | async">
+        <td>{{ flight.pilotId }}</td>
+        <td>{{ flight.flightNumber }}</td>
+        <td>{{ flight.status | flightStatus }}</td>
+        <td>
+         <div [ngSwitch]="flight.status.toLowerCase()">
+           <div *ngSwitchCase="'board'">
+            <button type="button" class="btn btn-primary" (click)="updateStatus(flight, 'taxi')">
+              Request Take-Off
+            </button>
+           </div>
+           <div *ngSwitchCase="'taxi'">
+            <span>Await Approval</span>
+           </div>
+           <div *ngSwitchDefault>None</div>
+         </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="well">
+    <button class="btn btn-success" (click)="updateFlights()">Check Status</button>
+  </div>
+</div>

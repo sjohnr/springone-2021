@@ -1,0 +1,17 @@
+plugins {
+	id 'java'
+	id "com.github.node-gradle.node" version "3.0.1"
+}
+
+node {
+	version = '14.17.5'
+	npmVersion = '6.14.14'
+	download = true
+}
+
+task prepareSpaResources {
+	dependsOn npm_run_build
+	doLast {
+		print 'Prepared SPA resources'
+	}
+}

@@ -1,0 +1,31 @@
+<header>
+  <div class="container">
+    <ul class="nav p-2 align-items-center">
+      <li class="nav-item">
+        <a routerLink="/app/home">
+          <img src="/assets/img/spring-logo.png" alt="Spring Logo">
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="flights" routerLinkActive="active">Flights</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="panel" routerLinkActive="active">Controller Panel</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="user-info" routerLinkActive="active">User Info</a>
+      </li>
+    </ul>
+  </div>
+</header>
+<section id="content">
+  <router-outlet></router-outlet>
+</section>
+<footer>
+  <div class="container hidden-print">
+    <div class="text-center">
+      <p class="muted credit">Visit the <a href="https://spring.io/projects/spring-security" target="_blank">SpringSecurity</a>
+        site for more <a href="https://github.com/spring-projects/spring-security-samples" target="_blank">samples</a>.</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,1 @@
+docker run --rm -p 8090:8090 flights-api:0.0.1-SNAPSHOT

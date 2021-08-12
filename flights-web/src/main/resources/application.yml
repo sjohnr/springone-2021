@@ -1,0 +1,19 @@
+server:
+  port: 8000
+
+logging:
+  level:
+    org.springframework.security: TRACE
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: resource
+          uri: http://localhost:8090
+          predicates:
+            - Path=/flights/**, /user/**
+        - id: default
+          uri: forward:/index.html
+          predicates:
+            - Path=/app/**

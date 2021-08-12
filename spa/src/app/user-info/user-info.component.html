@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="pb-2 mt-4 mb-2 border-bottom">
+    <h1>User Info</h1>
+  </div>
+  <div *ngIf="user$ | async as user">
+    <div>
+      <h5>Greetings, {{ user.name }}.</h5>
+      <h6>You are logged in via the OAuth 2.0 Client {{ user.authorizedClientRegistrationId }}</h6>
+    </div>
+    <div>
+      <span class="text-bold">Attributes:</span>
+      <pre>{{ user.principal.attributes | json }}</pre>
+    </div>
+  </div>
+</div>
