@@ -6,6 +6,19 @@ logging:
     org.springframework.security: TRACE
 
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          air-traffic-control-client:
+            provider: spring
+            client-id: air-traffic-control
+            client-secret: secret
+            scope: openid,flights:read,flights:write
+            client-name: Spring
+        provider:
+          spring:
+            issuer-uri: http://auth-server:9000
   cloud:
     gateway:
       routes:
@@ -13,6 +26,8 @@ spring:
           uri: http://localhost:8090
           predicates:
             - Path=/flights/**, /user/**
+          filters:
+            - TokenRelay=
         - id: default
           uri: forward:/index.html
           predicates:

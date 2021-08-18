@@ -13,8 +13,7 @@ export class GatewayInterceptor implements HttpInterceptor {
     }
 
     const newReq = req.clone({
-      url: 'http://127.0.0.1:8090' + req.url,
-      withCredentials: true
+      url: 'http://127.0.0.1:8000' + req.url
     });
 
     return next.handle(newReq);
