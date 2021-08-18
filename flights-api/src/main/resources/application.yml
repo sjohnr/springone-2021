@@ -1,6 +1,14 @@
 server:
   port: 8090
 
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://auth-server:9000/oauth2/jwks
+          issuer-uri: http://auth-server:9000
+
 logging:
   level:
     org.springframework.security: TRACE

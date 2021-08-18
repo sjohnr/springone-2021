@@ -5,10 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
@@ -24,18 +21,15 @@ public class SecurityConfiguration {
 		// @formatter:off
 		http
 			.authorizeHttpRequests((authz) -> authz.anyRequest().access(access))
-			.httpBasic(Customizer.withDefaults())
 			.cors(Customizer.withDefaults())
-			.csrf((csrf) -> csrf
-				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-			);
+			.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
 		// @formatter:on
 		return http.build();
 	}
 
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
-		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
@@ -43,23 +37,6 @@ public class SecurityConfiguration {
 		config.setAllowCredentials(true);
 		source.registerCorsConfiguration("/**", config);
 		return source;
-	}
-
-	@Bean
-	public UserDetailsService userDetailsService() {
-		UserDetails josh = User.withUsername("josh")
-				.password("{bcrypt}$2a$10$l4d14E8Vzm/xpOKSNi5T..pzRYzMKNN3Fxt0DNkNWZpK/eNsV86ca")
-				.authorities("flights:all", "flights:approve", "flights:read", "flights:write")
-				.build();
-		UserDetails marcus = User.withUsername("marcus")
-				.password("{bcrypt}$2a$10$l4d14E8Vzm/xpOKSNi5T..pzRYzMKNN3Fxt0DNkNWZpK/eNsV86ca")
-				.authorities("flights:read", "flights:write")
-				.build();
-		UserDetails steve = User.withUsername("steve")
-				.password("{bcrypt}$2a$10$pSOEyeq4mL6bBPAyLr1JTeitMie5NCsSO9NliAWSDdih04eC3F9IG")
-				.authorities("flights:read", "flights:write")
-				.build();
-		return new InMemoryUserDetailsManager(josh, marcus, steve);
 	}
 
 }
