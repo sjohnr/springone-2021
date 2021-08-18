@@ -2,7 +2,6 @@ package com.example.api;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -10,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfiguration {
@@ -25,7 +25,10 @@ public class SecurityConfiguration {
 				.anyRequest().hasAuthority("flights:write")
 			)
 			.httpBasic(Customizer.withDefaults())
-			.cors(Customizer.withDefaults());
+			.cors(Customizer.withDefaults())
+			.csrf((csrf) -> csrf
+				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+			);
 		// @formatter:on
 		return http.build();
 	}
