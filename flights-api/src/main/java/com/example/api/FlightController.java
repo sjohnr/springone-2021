@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,8 +26,8 @@ public class FlightController {
 	}
 
 	@GetMapping
-	public List<Flight> getFlights() {
-		return this.flightRepository.findByPilotId("marcus");
+	public List<Flight> getFlights(Authentication authentication) {
+		return this.flightRepository.findByPilotId(authentication.getName());
 	}
 
 	@PutMapping("/{flightNumber}/taxi")
