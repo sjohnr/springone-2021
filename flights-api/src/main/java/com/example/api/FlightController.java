@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class FlightController {
 	}
 
 	@PutMapping("/{flightNumber}/taxi")
+	@PostAuthorize("returnObject.pilotId == authentication.name")
 	@Transactional
 	public Flight taxi(@PathVariable String flightNumber) {
 		Flight flight = this.flightRepository.findByFlightNumber(flightNumber);
