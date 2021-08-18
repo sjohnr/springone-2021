@@ -1,2 +1,6 @@
 server:
   port: 8090
+
+logging:
+  level:
+    org.springframework.security: TRACE
