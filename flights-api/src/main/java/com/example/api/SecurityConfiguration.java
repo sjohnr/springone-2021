@@ -20,15 +20,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfiguration {
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain securityFilterChain(HttpSecurity http, AccessRuleAuthorizationManager access) throws Exception {
 		// @formatter:off
 		http
-			.authorizeHttpRequests((authz) -> authz
-				.antMatchers("/flights/all").hasAuthority("flights:all")
-				.antMatchers("/flights/*/take-off").hasAuthority("flights:approve")
-				.antMatchers("/flights").hasAuthority("flights:read")
-				.anyRequest().hasAuthority("flights:write")
-			)
+			.authorizeHttpRequests((authz) -> authz.anyRequest().access(access))
 			.httpBasic(Customizer.withDefaults())
 			.cors(Customizer.withDefaults())
 			.csrf((csrf) -> csrf
