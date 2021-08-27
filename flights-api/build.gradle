@@ -2,6 +2,9 @@ plugins {
 	id 'org.springframework.boot' version '2.5.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'org.springframework.experimental.aot' version '0.10.3'
+	id 'org.graalvm.buildtools.native' version '0.9.3'
+	id 'org.hibernate.orm'
 }
 
 group = 'com.example'
@@ -10,7 +13,7 @@ sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
-	maven { url "https://repo.spring.io/release" }
+	maven { url 'https://repo.spring.io/release' }
 }
 
 dependencies {
@@ -23,4 +26,26 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+bootBuildImage {
+	builder = 'paketobuildpacks/builder:tiny'
+	environment = ['BP_NATIVE_IMAGE': 'true', 'BP_NATIVE_IMAGE_BUILD_ARGUMENTS': '--enable-url-protocols=http']
+}
+
+nativeBuild {
+	classpath processAotResources.outputs, compileAotJava.outputs
+}
+
+nativeTest {
+	classpath processAotTestResources.outputs, compileAotTestJava.outputs
+}
+
+hibernate {
+	enhance {
+		enableLazyInitialization = true
+		enableDirtyTracking = true
+		enableAssociationManagement = true
+		enableExtendedEnhancement = false
+	}
 }
