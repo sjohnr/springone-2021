@@ -18,9 +18,6 @@ import { GatewayInterceptor } from './interceptors/gateway.interceptor';
     HttpClientXsrfModule,
     AppRoutingModule,
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: GatewayInterceptor, multi: true }
-  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
