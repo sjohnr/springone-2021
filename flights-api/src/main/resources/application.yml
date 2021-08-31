@@ -1,2 +1,4 @@
 server:
   port: 8090
+
+spring.mvc.hiddenmethod.filter.enabled: true
