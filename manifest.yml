@@ -1,0 +1,11 @@
+---
+applications:
+  - name: flights-web
+    path: flights-web/build/libs/flights-web-0.0.1-SNAPSHOT.jar
+    env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
+      FLIGHTS_API_ENDPOINT: https://flights-api.apps.pcfone.io
+  - name: flights-api
+    path: flights-api/build/libs/flights-api-0.0.1-SNAPSHOT.jar
+    env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }' 

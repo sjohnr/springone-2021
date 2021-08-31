@@ -10,7 +10,7 @@ spring:
     gateway:
       routes:
         - id: resource
-          uri: http://localhost:8090
+          uri: ${FLIGHTS_API_ENDPOINT:http://localhost:8090}
           predicates:
             - Path=/flights/**, /user/**
         - id: default
