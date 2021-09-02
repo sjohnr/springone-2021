@@ -9,7 +9,13 @@ It contains the following four applications:
 * [flights-api](/flights-api) - A REST API secured with Spring Security OAuth 2.0 Resource Server
 * [sso](/sso) - A Spring-powered OAuth 2.0 Authorization Server
 
-The final state is a single-page application that authenticates the user with OpenID Connect 1.0 and collaborates with a REST API using OAuth 2.0 bearer tokens.
+The final state is a single-page application that authenticates the user with OpenID Connect 1.0 and collaborates with a REST API using OAuth 2.0 bearer tokens. It brings together the following concepts:
+
+* The `spa` is served as static content from the `/static` directory of `flights-web`
+* The `sso` application is configured as an OpenID Connect 1.0 provider that mints signed JWTs for an OAuth 2.0 client
+* The `flights-api` application is simplified to act as a resource server that verifies signed JWTs for authentication
+* The `flights-web` application acts as an OAuth 2.0 client, performs token relay with Spring Cloud Gateway, and implements the [backend for frontend (bff)](https://www.ietf.org/id/draft-bertocci-oauth2-tmi-bff-01.html) pattern to store access tokens on the server
+* The `spa` authenticates with `flights-web` using a standard session cookie (`SESSIONID`), and additionally uses a cookie/header pair for csrf protection (`XSRF-TOKEN`, `X-XSRF-TOKEN`)
 
 Getting Started
 --
@@ -50,10 +56,10 @@ Each checkpoint along the way contains a specific commit message you can use to 
 ./look-at 'Step 1'
 ```
 
-This will safely attempt to switch to a particular commit, but you will be in 'detached HEAD' state. To reset to a particular point such as *Step 11 - Secure BFF application* ,`git checkout main` again, and do the following:
+This will safely attempt to switch to a particular commit, but you will be in 'detached HEAD' state. To reset to a particular point such as *Step 12 - Secure BFF application* ,`git checkout main` again, and do the following:
 
 ```shell
-./jump-to 'Step 11'
+./jump-to 'Step 12'
 ```
 
 This will hard-reset to the specified commit and discard changes in your working directory.
