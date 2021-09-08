@@ -1,0 +1,31 @@
+version: '3'
+services:
+  sso:
+    container_name: springone-2021-sso
+    image: sjohnr/springone-2021-sso
+    hostname: auth-server
+    ports:
+      - 9000:9000
+    healthcheck:
+      test: 'exit 0'
+      interval: 1s
+      retries: 15
+  flights-api:
+    container_name: springone-2021-flights-api
+    image: sjohnr/springone-2021-flights-api
+    hostname: flights-api
+    ports:
+      - 8090:8090
+    depends_on:
+      sso:
+        condition: service_healthy
+  flights-web:
+    container_name: springone-2021-flights-web
+    image: sjohnr/springone-2021-flights-web
+    ports:
+      - 8000:8000
+    environment:
+      FLIGHTS_API_HOST: flights-api
+    depends_on:
+      sso:
+        condition: service_healthy

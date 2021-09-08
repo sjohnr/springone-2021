@@ -41,6 +41,15 @@ Then, start the SPA and OAuth 2.0 Client application using the following command
 
 Finally, navigate to http://127.0.0.1:8000
 
+Running Natively
+--
+
+To run the application's natively, you can use [spring-native](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-native-image) to build the images locally, or pull the pre-built images from Docker Hub. A docker-compose.yml file is provided to run using the pre-built images.
+
+```shell
+docker-compose up
+```
+
 Following Along
 --
 
