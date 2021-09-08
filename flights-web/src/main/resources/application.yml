@@ -23,7 +23,7 @@ spring:
     gateway:
       routes:
         - id: resource
-          uri: http://localhost:8090
+          uri: http://${FLIGHTS_API_HOST:localhost}:8090
           predicates:
             - Path=/flights/**, /user/**
           filters:
