@@ -10,11 +10,10 @@ sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
-	maven { url "https://repo.spring.io/snapshot" }
 }
 
 dependencies {
-	implementation 'org.springframework.security.experimental:spring-security-oauth2-authorization-server:0.2.0-SNAPSHOT'
+	implementation 'org.springframework.security:spring-security-oauth2-authorization-server:0.2.0'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
