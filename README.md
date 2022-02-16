@@ -41,6 +41,8 @@ Then, start the SPA and OAuth 2.0 Client application using the following command
 
 Finally, navigate to http://127.0.0.1:8000
 
+NOTE: Ensure you have added `127.0.0.1	auth-server` to your `/etc/hosts` file, which is used to keep the authorization server on a separate host to distinguish cookies from other apps running on `localhost`.
+
 Running Natively
 --
 
