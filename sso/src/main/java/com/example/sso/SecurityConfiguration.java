@@ -52,8 +52,12 @@ public class SecurityConfiguration {
 	public SecurityFilterChain standardSecurityFilterChain(HttpSecurity http) throws Exception {
 		// @formatter:off
 		http
-			.authorizeRequests((authorize) -> authorize.anyRequest().authenticated())
-			.formLogin(Customizer.withDefaults());
+			.authorizeRequests((authorize) -> authorize
+				.anyRequest().authenticated()
+			)
+			.formLogin((formLogin) -> formLogin
+				.loginPage("/login").permitAll()
+			);
 		// @formatter:on
 
 		return http.build();
