@@ -2,6 +2,9 @@ server:
   port: 8090
 
 spring:
+  mongodb:
+    embedded:
+      version: 3.5.5
   security:
     oauth2:
       resourceserver:

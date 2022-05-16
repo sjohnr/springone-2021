@@ -1,15 +1,13 @@
 package com.example.api;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity(name="rules")
+@Document("rules")
 public class AccessRule {
 	@Id
 	private String pattern;
 
-	@Column
 	private String authority;
 
 	protected AccessRule() {}
