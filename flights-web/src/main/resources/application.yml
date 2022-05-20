@@ -28,6 +28,7 @@ spring:
             - Path=/flights/**, /user/**
           filters:
             - TokenRelay=
+            - RemoveRequestHeader=Cookie
         - id: default
           uri: forward:/index.html
           predicates:

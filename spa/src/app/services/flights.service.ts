@@ -22,6 +22,7 @@ export class FlightsService {
   }
 
   getAllFlights(): Observable<Flight[]> {
+    console.log('about to get flights');
     return this.http.get<Flight[]>('/flights/all');
   }
 }

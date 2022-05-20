@@ -1,40 +1,44 @@
 package com.example.api;
 
-import java.util.Set;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverter;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+import reactor.core.publisher.Flux;
+
+import java.util.Set;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
+@EnableWebFluxSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http, AccessRuleAuthorizationManager access) throws Exception {
+	SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, AccessRuleAuthorizationManager access) {
 		// @formatter:off
 		http
-			.authorizeHttpRequests((authz) -> authz.anyRequest().access(access))
-			.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+			.authorizeExchange((authorize) -> authorize.anyExchange().access(access))
+			.oauth2ResourceServer((resourceServer) -> resourceServer.jwt(withDefaults()));
 		// @formatter:on
 		return http.build();
 	}
 
 	@Bean
-	public JwtAuthenticationConverter jwtAuthenticationConverter() {
+	public ReactiveJwtAuthenticationConverter jwtAuthenticationConverter() {
 		JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
 		authoritiesConverter.setAuthorityPrefix("");
 
-		JwtAuthenticationConverter authenticationConverter = new JwtAuthenticationConverter();
+		ReactiveJwtAuthenticationConverter authenticationConverter = new ReactiveJwtAuthenticationConverter();
 		authenticationConverter.setJwtGrantedAuthoritiesConverter((jwt) -> {
 			if (!"josh".equals(jwt.getSubject())) {
-				return authoritiesConverter.convert(jwt);
+				return Flux.fromIterable(authoritiesConverter.convert(jwt));
 			}
 			Set<String> authorities = AuthorityUtils.authorityListToSet(authoritiesConverter.convert(jwt));
 			if (authorities.contains("flights:write")) {
@@ -43,10 +47,9 @@ public class SecurityConfiguration {
 			if (authorities.contains("flights:read")) {
 				authorities.add("flights:all");
 			}
-			return AuthorityUtils.createAuthorityList(authorities.toArray(String[]::new));
+			return Flux.fromIterable(AuthorityUtils.createAuthorityList(authorities.toArray(String[]::new)));
 		});
 
 		return authenticationConverter;
 	}
-
 }

@@ -2,9 +2,9 @@ package com.example.web;
 
 import java.time.Duration;
 
+import org.springframework.boot.web.server.Cookie;
 import reactor.core.publisher.Mono;
 
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class CsrfCookieWebFilter implements WebFilter {
 		Mono<CsrfToken> csrfToken = null != exchange.getAttribute(key) ? exchange.getAttribute(key) : Mono.empty();
 		return csrfToken.doOnSuccess(token -> {
 			ResponseCookie cookie = ResponseCookie.from("XSRF-TOKEN", token.getToken()).maxAge(Duration.ofHours(1))
-					.httpOnly(false).path("/").sameSite(WebFluxProperties.SameSite.LAX.attribute()).build();
+					.httpOnly(false).path("/").sameSite(Cookie.SameSite.LAX.attributeValue()).build();
 			exchange.getResponse().getCookies().add("XSRF-TOKEN", cookie);
 		}).then(chain.filter(exchange));
 	}

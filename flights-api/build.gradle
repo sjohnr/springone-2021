@@ -17,10 +17,10 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
@@ -40,6 +40,10 @@ nativeBuild {
 
 nativeTest {
 	classpath processAotTestResources.outputs, compileAotTestJava.outputs
+}
+
+springAot {
+	failOnMissingSelectorHint = false
 }
 
 hibernate {

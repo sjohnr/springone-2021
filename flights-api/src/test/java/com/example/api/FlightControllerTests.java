@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -32,7 +33,7 @@ public class FlightControllerTests {
 	@WithMockUser(username = "marcus", authorities = "flights:write")
 	void taxiWhenPilotIdEqualToAuthenticationNameThenOk() throws Exception {
 		when(this.flightRepository.findByFlightNumber(anyString()))
-				.thenReturn(new Flight(FLIGHT_102, "marcus", Flight.Status.BOARD));
+				.thenReturn(Mono.just(new Flight(FLIGHT_102, "marcus", Flight.Status.BOARD)));
 
 		this.mockMvc.perform(put("/flights/{flightNumber}/taxi", FLIGHT_102)
 				.with(csrf().asHeader()))
@@ -43,7 +44,7 @@ public class FlightControllerTests {
 	@WithMockUser(username = "marcus", authorities = "flights:write")
 	void taxiWhenPilotIdNotEqualToAuthenticationNameThenForbidden() throws Exception {
 		when(this.flightRepository.findByFlightNumber(anyString()))
-				.thenReturn(new Flight(FLIGHT_103, "steve", Flight.Status.BOARD));
+				.thenReturn(Mono.just(new Flight(FLIGHT_103, "steve", Flight.Status.BOARD)));
 
 		this.mockMvc.perform(put("/flights/{flightNumber}/taxi", FLIGHT_103)
 				.with(csrf().asHeader()))
