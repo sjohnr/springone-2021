@@ -21,10 +21,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfiguration {
 
 	@Bean
-	SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+	SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, AccessRuleAuthorizationManager access) {
 		// @formatter:off
 		http
-			.authorizeExchange((authorize) -> authorize.anyExchange().authenticated())
+			.authorizeExchange((authorize) -> authorize.anyExchange().access(access))
 			.oauth2ResourceServer((resourceServer) -> resourceServer.jwt(withDefaults()));
 		// @formatter:on
 		return http.build();
